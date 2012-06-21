@@ -1,0 +1,3 @@
+This programm is to show how to write an **underivable** class in c++.
+The class base must be **virtually** inherited from base_lock. Without **virtual**, it is class base that is responsible for constructing base_lock, and because base is a friend of base_lock, the programm can be compiled.
+If base is virtually inherited from base_lock, it is derived that constructs base_lock, which makes the compilation fails because the constructor of base_lock is private.
