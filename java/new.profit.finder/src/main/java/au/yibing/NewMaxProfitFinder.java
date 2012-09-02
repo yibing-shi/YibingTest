@@ -13,28 +13,28 @@ public class NewMaxProfitFinder {
     private static class DataBlock {
         private final byte[] buffer;
         private final int bufLen;
-        private int curPos;
 
         private DataBlock(byte[] buffer, int bufLen) {
             this.buffer = buffer;
             this.bufLen = bufLen;
-            this.curPos = 0;
         }
 
         public boolean isEmpty() {
             return bufLen == 0;
         }
 
-        public byte read() {
-            if (curPos >= bufLen)
-                return -1;
-            return buffer[curPos++];
+        public byte[] getBuffer() {
+            return buffer;
+        }
+
+        public int getBufLen() {
+            return bufLen;
         }
     }
 
     private static String inputFilePath;
     private static String outputFilePath;
-    private static final BlockingQueue<DataBlock> queue = new ArrayBlockingQueue<DataBlock>(1024 * 10);
+    private static final BlockingQueue<DataBlock> queue = new ArrayBlockingQueue<DataBlock>(1024);
     private static final ExecutorService threadPool = Executors.newCachedThreadPool();
 
     private static class Analyzer implements Callable<Integer> {
@@ -75,42 +75,61 @@ public class NewMaxProfitFinder {
         }
 
         private DataBlock curDataBlock;
-        private StringBuilder[] fields = new StringBuilder[2];
-        {
-            fields[0] = new StringBuilder("0");
-            fields[1] = new StringBuilder();
-        }
-        private int curField = 1; //First line only contains date.
-        private double currentPrice = 1;
-
+        private String[] fields = new String[2];
+        private int curField = 0; //First line only contains date.
         private int start = 0;
-        private int end = -1;
-        private int comma = -1;
+        private int curPos = 0;
+        private String remaining = null;
+        private double currentPrice = 1;
 
         private PriceInfo getNextPriceInfo() {
             while ((curDataBlock != null) || (curDataBlock = getNextDataBlock()) != null) {
-                byte b;
-                while ((b = curDataBlock.read()) != -1) {
-                    if (b == '\r')
+                for (; curPos < curDataBlock.getBufLen(); curPos++) {
+                    byte b = curDataBlock.getBuffer()[curPos];
+
+                    if (b == '\r') {
+                        if (start == curPos)
+                            start = curPos + 1;
                         continue;
+                    }
 
                     if (b == ',') {
-                        curField = (curField + 1) % 2;
+                        fields[curField] = new String(curDataBlock.getBuffer(), start, curPos - start);
+                        if (remaining != null) {
+                            fields[curField] = remaining + fields[curField];
+                            remaining = null;
+                        }
+                        start = curPos + 1;
+                        curField = 1;
                         continue;
                     }
 
                     if (b == '\n') {
-                        return createPriceInfoAndResetMembers();
+                        fields[curField] = new String(curDataBlock.getBuffer(), start, curPos - start);
+                        if (remaining != null) {
+                            fields[curField] = remaining + fields[curField];
+                            remaining = null;
+                        }
+                        start = curPos + 1;
+                        PriceInfo result = createPriceInfo();
+                        curField = 0;
+                        fields[0] = null;
+                        fields[1] = null;
+                        curPos ++;
+                        return result;
                     }
-
-                    fields[curField].append((char)b);
                 }
 
+                if (start < curPos)
+                    remaining = new String(curDataBlock.getBuffer(), start, curPos - start);
                 curDataBlock = null;
+                start = 0;
+                curPos = 0;
             }
 
-            if (fields[0].length() > 0 && fields[1].length() >0) {
-                return createPriceInfoAndResetMembers();
+            if (remaining != null) {
+                remaining = null;
+                return createPriceInfo();
             }
 
             return null;
@@ -121,6 +140,7 @@ public class NewMaxProfitFinder {
             while (dataBlock == null) {
                 try {
                     dataBlock = queue.take();
+//                    System.out.println("Take one data block at " + System.nanoTime()/1000);
                 } catch (InterruptedException e) {
                     System.err.println("Warning: get interrupted when trying to read data block from queue");
                 }
@@ -132,16 +152,19 @@ public class NewMaxProfitFinder {
             return dataBlock;
         }
 
-        private PriceInfo createPriceInfoAndResetMembers() {
-            double m = Double.valueOf(fields[0].toString());
+        private PriceInfo createPriceInfo() {
+            double m;
+            String date;
+            if (fields[1] == null) {
+                m = 0;
+                date = fields[0];
+            } else {
+                m = Double.valueOf(fields[0]);
+                date = fields[1];
+            }
+
             currentPrice = currentPrice * (m / 100 + 1);
-            PriceInfo result = new PriceInfo(currentPrice, fields[1].toString());
-
-            curField = (curField + 1) % 2;
-            fields[0].delete(0, fields[0].length());
-            fields[1].delete(0, fields[1].length());
-
-            return result;
+            return new PriceInfo(currentPrice, date);
         }
     }
 
@@ -180,6 +203,7 @@ public class NewMaxProfitFinder {
                 nGet = Math.min(bb.remaining( ), BUF_SIZE);
                 bb.get( buffer, 0, nGet );
                 queue.put(new DataBlock(buffer, nGet));
+//                System.out.println(queue.size());
             }
             bb.clear( );
         }
