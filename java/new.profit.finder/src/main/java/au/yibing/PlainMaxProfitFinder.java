@@ -17,12 +17,11 @@ public class PlainMaxProfitFinder {
             outputFilePath = args[1];
         }
 
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(inputFilePath)));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader(inputFilePath));
 
 
         double lowPointPrice = 1;
         String lowPointDate = bufferedReader.readLine(); //set low point according to first line
-        double sellPointPrice = -1;
         String sellPointDate = null;
         double buyPointPrice = -1;
         String buyPointDate = null;
@@ -37,7 +36,6 @@ public class PlainMaxProfitFinder {
             double curPossibleMaxProfit = currentPrice - lowPointPrice;
             if (curPossibleMaxProfit > maxProfit) {
                 maxProfit = curPossibleMaxProfit;
-                sellPointPrice = currentPrice;
                 sellPointDate = date;
                 buyPointPrice = lowPointPrice;
                 buyPointDate = lowPointDate;
@@ -49,7 +47,7 @@ public class PlainMaxProfitFinder {
         }
 
         if (buyPointDate != null & sellPointDate != null) {
-            writeResult(buyPointPrice, buyPointDate, sellPointPrice, sellPointDate, maxProfit, outputFilePath);
+            writeResult(buyPointPrice, buyPointDate, sellPointDate, maxProfit, outputFilePath);
         }else {
             System.err.println("Cannot find any profit");
         }
@@ -57,7 +55,6 @@ public class PlainMaxProfitFinder {
 
     private static void writeResult(double buyPointPrice,
                                     String buyPointDate,
-                                    double sellPointPrice,
                                     String sellPointDate,
                                     double profit,
                                     String outputFilePath) throws FileNotFoundException {
