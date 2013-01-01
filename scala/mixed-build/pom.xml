@@ -54,6 +54,9 @@
 		</pluginManagement>
 
 		<plugins>
+			<!-- The first two plugins are used to build scala code. Look at 
+			     http://scala-tools.org/mvnsites/maven-scala-plugin/usage_java.html 
+			     for more details -->
 			<plugin>
 				<groupId>org.scala-tools</groupId>
 				<artifactId>maven-scala-plugin</artifactId>
@@ -95,6 +98,7 @@
 				</executions>
 			</plugin>
 
+			<!-- This plugin is used for generating eclipse project files -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
@@ -126,7 +130,8 @@
 				</configuration>
 			</plugin>
 
-			<!-- Adds src/main/scala and src/test/scala as source folders, from http://groups.google.com/group/liftweb/browse_thread/thread/3dac7002f9e59546/3918bba2f7a92cd3?pli=1 -->
+			<!-- Adds src/main/scala and src/test/scala as source folders, from 
+			     http://groups.google.com/group/liftweb/browse_thread/thread/3dac7002f9e59546/3918bba2f7a92cd3?pli=1 -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
