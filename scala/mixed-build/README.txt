@@ -23,7 +23,12 @@ to replace the corresponding part in pom.xml.
       </plugin>
 
 ===Build===
-1. mvn clean package
-2. mvn eclipse:clean eclipse:eclipse
-3. import the project in Elipse (should install scala-ide for eclipse first)
-4. Run/Debug
+mvn clean package
+
+===Open project in eclipse===
+1. mvn eclipse:clean eclipse:eclipse
+2. import the project in Elipse (should install scala-ide for eclipse first)
+
+===Open project in IntelliJ===
+1. Install scala and sbt plugin for IntelliJ
+2. Open/Import this maven project in IntelliJ
