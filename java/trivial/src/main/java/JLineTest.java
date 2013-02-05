@@ -7,13 +7,6 @@ import jline.Completor;
 import jline.ConsoleReader;
 import jline.SimpleCompletor;
 
-/**
- * Created by IntelliJ IDEA.
- * User: Yibing
- * Date: 11/10/11
- * Time: 10:23 PM
- * To change this template use File | Settings | File Templates.
- */
 public class JLineTest {
     private static final String[] COMMANDS = {"execute", "quit"};
     private static final String[] SUB_COMMANDS = {"listings"};
