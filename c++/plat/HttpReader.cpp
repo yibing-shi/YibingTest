@@ -4,6 +4,7 @@
 #include "Dispatcher.h"
 #include "Logger.h"
 #include <string.h>
+#include <cstdio>
 
 
 namespace PLAT_7G{

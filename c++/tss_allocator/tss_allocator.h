@@ -1,7 +1,8 @@
 #ifndef __TSS_ALLOCATOR_HEADER__
 #define __TSS_ALLOCATOR_HEADER__
 
-#include <numeric>
+#include <limits>
+#include <cstddef>
 #include "mem_pool.h"
 
 
@@ -35,6 +36,7 @@ public:
 
     tss_allocator() throw()
     {
+        init();
     }
 
     template <class V>
@@ -54,8 +56,6 @@ public:
     //allocate but don't initialize num elements of type T
     pointer allocate (size_type num, const void* = 0)
     {
-        if (buckets == NULL)
-            init();
         size_type i = get_bucket_idx(num * sizeof(T));
         if (i >= BUCKETS_NUM)
         {

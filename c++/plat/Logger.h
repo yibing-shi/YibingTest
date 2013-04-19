@@ -17,6 +17,7 @@
 #include "Thread.h"
 #include "Guard.h"
 #include "Singleton.h"
+#include "stdarg.h"
 
 namespace PLAT_7G{
 

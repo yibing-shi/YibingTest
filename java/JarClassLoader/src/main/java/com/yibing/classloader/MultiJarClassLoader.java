@@ -1,6 +1,8 @@
 package com.yibing.classloader;
 
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
@@ -59,6 +61,7 @@ public class MultiJarClassLoader extends URLClassLoader {
         System.out.println(c.newInstance());
         InputStream in = cl.getResourceAsStream("version.txt");
         Scanner scanner = new Scanner(in);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(cl.getResourceAsStream("version.txt")));
         System.out.println("version: " + scanner.nextLine());
     }
 }

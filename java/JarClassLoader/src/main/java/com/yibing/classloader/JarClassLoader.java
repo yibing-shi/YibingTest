@@ -14,7 +14,7 @@ import java.util.jar.JarFile;
  * Created by IntelliJ IDEA.
  * User: yibing
  * Date: 11-11-26
- * Time: 上午12:33
+ * Time: 12:33
  * @author Yibing
  * @version 1.0
  * To load classes or resource from a JAR file

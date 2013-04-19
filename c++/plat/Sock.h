@@ -11,6 +11,8 @@
 
 #ifdef WIN32
 #include <windows.h>
+#else
+#include <unistd.h>
 #endif
 #include "config.h"
 #include "SockAddr.h"
