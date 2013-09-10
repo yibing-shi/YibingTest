@@ -1,3 +1,5 @@
+package com.yibing;
+
 import org.joda.time.DateTime;
 
 import java.sql.*;

@@ -1,4 +1,4 @@
-/*
+package com.yibing;/*
 
    Derby - Class SimpleApp
 
@@ -91,7 +91,7 @@ public class DerbyTest
     public static void main(String[] args)
     {
         new DerbyTest().go(args);
-        System.out.println("DerbyTest finished");
+        System.out.println("com.yibing.DerbyTest finished");
     }
 
     /**
@@ -119,7 +119,7 @@ public class DerbyTest
         /* parse the arguments to determine which framework is desired*/
         parseArguments(args);
 
-        System.out.println("DerbyTest starting in " + framework + " mode");
+        System.out.println("com.yibing.DerbyTest starting in " + framework + " mode");
 
         /* load the desired JDBC driver */
         loadDriver();

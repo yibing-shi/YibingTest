@@ -1,3 +1,5 @@
+package com.yibing;
+
 import java.io.*;
 import java.util.Random;
 
