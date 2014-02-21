@@ -8,13 +8,6 @@
     <artifactId>hdfs-proxy</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <parent>
-        <groupId>com.effectivemeasure</groupId>
-        <artifactId>em-parent</artifactId>
-        <version>0.0.17</version>
-        <relativePath>../em-parent/pom.xml</relativePath>
-    </parent>
-
     <properties>
         <jetty.version>9.1.0.v20131115</jetty.version>
         <jersey.version>1.18</jersey.version>
