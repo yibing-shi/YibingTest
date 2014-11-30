@@ -21,5 +21,8 @@ public class ConTest
         
         System.out.printf("now is: %tc", new Date());
 
+        long amount = 10000;
+        System.out.println(String.format("amount = %s", amount));
+
     }
 }
