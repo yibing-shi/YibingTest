@@ -1,0 +1,6 @@
+This project is based on Java and maven, please make sure you can 
+execute java and mvn from command line.
+
+Please run this project with following command:
+mvn clean package
+mvn exec:java
