@@ -17,11 +17,16 @@
 
     <properties>
 
-        <hadoop.version>2.5.0-CDH5.2.0</hadoop.version>
-        <hive.version>0.13.1-CDH5.2.0</hive.version>
+        <hadoop.version>2.6.0-CDH5.4.0</hadoop.version>
+        <hive.version>1.1.0-CDH5.4.0</hive.version>
 
         <!--
-        <cdh.version>4.7.0</cdh.version>
+        <hadoop.version>2.5.0-CDH5.2.4</hadoop.version>
+        <hive.version>0.13.1-CDH5.2.4</hive.version>
+        -->
+
+        <!--
+        <cdh.version>4.5.0</cdh.version>
         <hadoop.version>2.0.0-CDH${cdh.version}</hadoop.version>
         <hive.version>0.10.0-CDH${cdh.version}</hive.version>
         -->
