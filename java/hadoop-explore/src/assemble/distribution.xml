@@ -4,8 +4,17 @@
           http://maven.apache.org/xsd/assembly-1.1.2.xsd">
     <id>distribution</id>
     <formats>
-        <format>jar</format>
+        <format>dir</format>
+        <format>tar.gz</format>
     </formats>
+
+    <fileSets>
+        <fileSet>
+            <directory>${basedir}/target/classes</directory>
+            <outputDirectory>classes</outputDirectory>
+        </fileSet>
+
+    </fileSets>
 
     <includeBaseDirectory>false</includeBaseDirectory>
 

@@ -10,41 +10,31 @@ import java.sql.*;
 
 public class Hive2ClientKerberos {
 
-    private static final String DFT_URL = "jdbc:hive2://nightly52-1.ent.cloudera.com:10000";
-    private static final String DFT_USER = "hive";
-    private static final String DFT_PSWD = "";
-
     public static void main (String args[]) throws SQLException, ClassNotFoundException, IOException, InterruptedException {
+        if (args.length != 4) {
+            System.err.println("Usage: java Hive2ClientKerberos <jdbc-url> <krb5.conf-path> <principal> <keytab-file-path>");
+            return;
+        }
+
+        final String jdbcUrl = args[0];
+        final String krb5ConfFile = args[1];
+        final String principal = args[2];
+        final String keytabFilePath = args[3];
 
         Class.forName("org.apache.hive.jdbc.HiveDriver");
 
-        String url = DFT_URL;
-        if (args.length > 0) {
-            url = args[0];
-        }
-
-        String user = DFT_USER;
-        if (args.length > 1) {
-            user = args[1];
-        }
-
-        String password = DFT_PSWD;
-        if (args.length > 2) {
-            password = args[2];
-        }
-
         Configuration conf = new Configuration();
         conf.set("hadoop.security.authentication", "kerberos");
-        conf.set("java.security.krb5.conf","/tmp/krb5.conf");
+        conf.set("java.security.krb5.conf", krb5ConfFile);
         UserGroupInformation.setConfiguration(conf);
-        UserGroupInformation.loginUserFromKeytab("hive/host-10-16-8-127.openstacklocal@YSHI.COM",
-                "/tmp/hive.keytab");
+        UserGroupInformation.loginUserFromKeytab(principal, keytabFilePath);
 
         Connection db = null;
         Statement stmt = null;
         ResultSet rs = null;
         try {
-            db = getConnectionWithLogin(UserGroupInformation.getLoginUser(), url, user, password);
+            db = getConnectionWithLogin(UserGroupInformation.getLoginUser(),
+                    getWholeJdbcUrl(jdbcUrl, principal), "hive", "");
             stmt = db.createStatement();
             rs = stmt.executeQuery("show databases");
 
@@ -56,11 +46,18 @@ public class Hive2ClientKerberos {
         }
     }
 
+    private static String getWholeJdbcUrl (final String jdbcUrl, final String principal) {
+        if (!jdbcUrl.contains(";pricipal=")) {
+            return jdbcUrl + ";principal=" + principal;
+        } else {
+            return jdbcUrl;
+        }
+    }
+
     private static Connection getConnectionWithLogin(final UserGroupInformation ugi, final String url,
                                                      final String user, final String password)
             throws IOException, InterruptedException {
         return ugi.doAs(new PrivilegedExceptionAction<Connection>() {
-            @Override
             public Connection run() throws Exception {
                 return DriverManager.getConnection(url, user, password);
             }

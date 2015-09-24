@@ -13,16 +13,19 @@ public class ConTest
         Collections.sort(list, Collections.reverseOrder());
         System.out.println(list);
 
-        Console cons = System.console();
-        String username = cons.readLine("User name: ");
-        char[] passwd = cons.readPassword("Password: ");
+//        Console cons = System.console();
+//        String username = cons.readLine("User name: ");
+//        char[] passwd = cons.readPassword("Password: ");
         
-        System.out.println("Hi " + username + ", your password is: " + new String(passwd));
+//        System.out.println("Hi " + username + ", your password is: " + new String(passwd));
         
         System.out.printf("now is: %tc", new Date());
 
         long amount = 10000;
         System.out.println(String.format("amount = %s", amount));
 
+        double d = 11112222333344445555d;
+        long l = (long) d;
+        System.out.println("double = " + d + ", long = " + l);
     }
 }
