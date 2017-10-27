@@ -2,7 +2,7 @@ package com.yshi.sqoop;
 
 import java.sql.*;
 
-public class JDBCDriverVerifier {
+public class JdbcDriverVerifier {
 
   public static void main(String[] args) throws ClassNotFoundException, SQLException {
     if (args.length != 3) {

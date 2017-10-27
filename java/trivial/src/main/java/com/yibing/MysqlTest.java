@@ -43,24 +43,16 @@ public class MysqlTest {
         try {
             connection = DriverManager.getConnection(dbUrl, username, password);
             Statement statement = connection.createStatement();
-            long totalTime = 0;
-            long totalAmount = 0;
-            for (int i = 0; i < TEST_COUNT; ++i) {
-                long numberOfResults = 0;
-                long startTime = System.currentTimeMillis();
-                Integer timeIndex = timeIndexes.get(randomGenerator.nextInt(timeIndexes.size()));
-                ResultSet resultSet = statement.executeQuery(getQuery(timeIndex));
-                while (resultSet.next()) {
-                    numberOfResults ++;
-                    totalAmount += resultSet.getLong(4);
+            ResultSet rs = statement.executeQuery("select * from test2");
+            ResultSetMetaData meta = rs.getMetaData();
+            while (rs.next()) {
+                for (int i = 0; i < meta.getColumnCount(); i++) {
+                    System.out.print(rs.getString(i + 1) + "\t");
                 }
-                long endTime = System.currentTimeMillis();
-                System.out.println(numberOfResults + " records returned for " + timeIndex +
-                        " in " + (endTime - startTime) + " milli seconds");
-                totalTime += endTime - startTime;
+                Timestamp ts = rs.getTimestamp("update_at");
+                System.out.print(ts.getTimezoneOffset());
+                System.out.println();
             }
-            System.out.println("Average time: " + totalTime/TEST_COUNT + " milli seconds");
-            System.out.println("Average amount: " + totalAmount/TEST_COUNT);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
@@ -73,17 +65,11 @@ public class MysqlTest {
         }
     }
 
-    private String getQuery(Integer timeIndex) {
-        return " select country_code, entity_id, partner_id, sum(m1) as amount " +
-                " from publication where country_code in (360,682) and time_index=" + timeIndex +
-                " group by country_code, entity_id, partner_id " +
-                " order by amount desc";
-    }
-
     public static void main(String[] args) {
-        final String dbUrl = "jdbc:mysql://labrat-00.eng.inf.effectivemeasure.net/em_data";
-        final String username = "dbtest";
-        final String password = "emr0cks";
+        final String dbUrl = "jdbc:mysql://host-10-17-81-144.coe.cloudera.com:3306/sqoop1?" +
+            "useTimezone=true&serverTimezone=America/Los_Angeles";
+        final String username = "sqoop";
+        final String password = "cloudera";
         MysqlTest mysqlTest = new MysqlTest(dbUrl, username, password);
         mysqlTest.test();
     }

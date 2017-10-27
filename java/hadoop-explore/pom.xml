@@ -19,6 +19,7 @@
 
         <hadoop.version>2.6.0-CDH5.4.0</hadoop.version>
         <hive.version>1.1.0-CDH5.4.0</hive.version>
+        <sqoop.version>1.4.5-cdh5.4.0</sqoop.version>
 
         <!--
         <hadoop.version>2.5.0-CDH5.2.4</hadoop.version>
@@ -59,6 +60,12 @@
         </dependency>
 
         <dependency>
+            <groupId>org.apache.sqoop</groupId>
+            <artifactId>sqoop</artifactId>
+            <version>${sqoop.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>commons-dbutils</groupId>
             <artifactId>commons-dbutils</artifactId>
             <version>1.5</version>
@@ -71,6 +78,11 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.3</version>
+        </dependency>
 
     </dependencies>
 
