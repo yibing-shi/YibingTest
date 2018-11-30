@@ -17,7 +17,7 @@ Output: ""
 
 Note:
 
-    S will consist of lowercase letters and have length in range [1, 500].
+    S will consist of lowercase letters [a - z]
 
  */
 
@@ -35,18 +35,11 @@ public class StringRegorganizor {
     private final char ch;
     private int count;
 
-    public CharCount(char ch, int count) {
+    CharCount(char ch, int count) {
       this.ch = ch;
       this.count = count;
     }
 
-    public char getCh() {
-      return ch;
-    }
-
-    public int getCount() {
-      return count;
-    }
   }
 
   public String reorg(String input) {
@@ -56,7 +49,7 @@ public class StringRegorganizor {
     }
 
     PriorityQueue<CharCount> pq = new PriorityQueue<>(
-        (cc1, cc2) -> cc1.getCount() == cc2.getCount() ? cc2.getCh() - cc1.getCh() : cc2.getCount() - cc1.getCount()
+        (cc1, cc2) -> cc1.count == cc2.count ? cc2.ch - cc1.ch : cc2.count - cc1.count
     );
     for (int i = 0; i < chCounts.length; ++i) {
       if (chCounts[i] > (input.length() + 1) / 2) {
@@ -74,22 +67,22 @@ public class StringRegorganizor {
     while (pq.size() > 1) {
       CharCount cc1 = pq.poll();
       CharCount cc2 = pq.poll();
-      sb.append(cc1.getCh());
-      sb.append(cc2.getCh());
-      if (cc1.getCount() > 1) {
-        pq.add(new CharCount(cc1.getCh(), cc1.getCount() - 1));
+      sb.append(cc1.ch);
+      sb.append(cc2.ch);
+      if (cc1.count > 1) {
+        pq.add(new CharCount(cc1.ch, cc1.count - 1));
       }
-      if (cc2.getCount() > 1) {
-        pq.add(new CharCount(cc2.getCh(), cc2.getCount() - 1));
+      if (cc2.count > 1) {
+        pq.add(new CharCount(cc2.ch, cc2.count - 1));
       }
     }
     if (pq.size() > 0) {
-      sb.append(pq.poll().getCh());
+      sb.append(pq.poll().ch);
     }
     return sb.toString();
   }
 
-  public String reorgNg(String input) {
+  String reorgNg(String input) {
     int chCounts[] = new int['z' - 'a'];
     for (char ch: input.toCharArray()) {
       chCounts[ch - 'a']++;
@@ -107,15 +100,15 @@ public class StringRegorganizor {
 
       countsList.add(new CharCount((char)('a' + i), chCounts[i]));
     }
-    countsList.sort((cc1, cc2) -> cc1.getCount() == cc2.getCount() ? cc2.getCh() - cc1.getCh() : cc2.getCount() - cc1.getCount());
+    countsList.sort((cc1, cc2) -> cc1.count == cc2.count ? cc2.ch - cc1.ch : cc2.count - cc1.count);
 
     StringBuilder sb = new StringBuilder(input.length());
     sb.setLength(input.length());
     int i = 0;
     while (!countsList.isEmpty()) {
       CharCount charCount = countsList.remove(0);
-      for (int j = 0; j < charCount.getCount(); j++) {
-        sb.setCharAt(i, charCount.getCh());
+      for (int j = 0; j < charCount.count; j++) {
+        sb.setCharAt(i, charCount.ch);
         i += 2;
         if (i >= input.length()) {
           i = 1;
